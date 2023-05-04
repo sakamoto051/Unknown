@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
 #include "UnknownCharacter.h"
 #include "PlayerCharacter.generated.h"
 
@@ -24,6 +25,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void Interact();
+	void ToggleCrouched();
+
 private:
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
@@ -32,4 +36,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float RotationRate = 10;
+	
+	float MaxRange = 100;
+
+	UPROPERTY(VisibleAnywhere)
+	bool IsCrouched;
 };

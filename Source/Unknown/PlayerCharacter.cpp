@@ -1,5 +1,14 @@
 #include "PlayerCharacter.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "DrawDebugHelpers.h"
 
+// // Sets default values
+// APlayerCharacter::APlayerCharacter()
+// {
+//  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+// 	PrimaryActorTick.bCanEverTick = true;
+// }
 
 void APlayerCharacter::BeginPlay()
 {
@@ -26,6 +35,49 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis(TEXT("LookRight"), this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis(TEXT("LookUpRate"), this, &APlayerCharacter::LookUpRate);
 	PlayerInputComponent->BindAxis(TEXT("LookRightRate"), this, &APlayerCharacter::LookRightRate);
+	PlayerInputComponent->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed, this, &APlayerCharacter::Interact);
+	PlayerInputComponent->BindAction(TEXT("Crouch"), EInputEvent::IE_Pressed, this, &APlayerCharacter::ToggleCrouched);
+}
+
+void APlayerCharacter::Interact()
+{
+	// カメラの位置と向きを格納するための変数
+	FVector Location;
+	FRotator Rotation;
+	// Characterクラスのポインタを取得
+	ACharacter* Character = UGameplayStatics::GetPlayerCharacter(this, 0);
+	if (Character == nullptr) {
+    	UE_LOG(LogTemp, Warning, TEXT("Character == nulptr"));
+		return;
+	}
+	// カメラの位置と向きを取得
+	Character->GetActorEyesViewPoint(Location, Rotation);
+
+	FHitResult Hit;
+	FVector ShotDirection;
+	ShotDirection = -Rotation.Vector();
+	FVector End = Location + Rotation.Vector() * MaxRange;
+
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	Params.AddIgnoredActor(GetOwner());
+
+	bool bSuccess = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel2, Params);
+	if (bSuccess) {
+    	UE_LOG(LogTemp, Warning, TEXT("Interacted!"));
+		DrawDebugPoint(GetWorld(), Hit.Location, 20, FColor::Red, true);
+	}
+}
+
+void APlayerCharacter::ToggleCrouched()
+{
+    if (IsCrouched) {
+        UnCrouch();
+		IsCrouched = false;
+    } else {
+        Crouch();
+		IsCrouched = true;
+    }
 }
 
 void APlayerCharacter::MoveForward(float AxisValue)
