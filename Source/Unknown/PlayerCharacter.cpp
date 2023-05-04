@@ -4,6 +4,20 @@
 #include "DrawDebugHelpers.h"
 #include "DoorPlatform.h"
 #include "Core/Public/Misc/OutputDeviceNull.h"
+#include "Sound/SoundCue.h"
+#include "Components/AudioComponent.h"
+
+
+APlayerCharacter::APlayerCharacter()
+{
+ 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
+
+	FootstepAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("FootstepAudioComponent"));
+	FootstepAudioComponent->bAutoActivate = false;
+	FootstepAudioComponent->SetupAttachment(RootComponent);
+	FootstepAudioComponent->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
+}
 
 void APlayerCharacter::BeginPlay()
 {
@@ -17,6 +31,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	APlayerCharacter::SoundFootStep();
 }
 
 // Called to bind functionality to input
@@ -96,4 +111,19 @@ void APlayerCharacter::LookUpRate(float AxisValue)
 void APlayerCharacter::LookRightRate(float AxisValue)
 {
 	AddControllerYawInput(AxisValue * RotationRate * GetWorld()->GetDeltaSeconds());
+}
+
+void APlayerCharacter::SoundFootStep()
+{
+	if (FootstepAudioComponent != nullptr && FootstepSoundCue != nullptr) {
+		const float VelocityMagnitude = GetVelocity().Size();
+		const bool bIsMoving = VelocityMagnitude > 0.0f;
+
+		if (bIsMoving && !FootstepAudioComponent->IsPlaying()) {
+			FootstepAudioComponent->SetSound(FootstepSoundCue);
+			FootstepAudioComponent->Play();
+		} else if (!bIsMoving && FootstepAudioComponent->IsPlaying()) {
+			FootstepAudioComponent->Stop();
+		}
+	}
 }
