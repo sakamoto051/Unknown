@@ -28,4 +28,10 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnInteract();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool CanOpen;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsOpen;
 };
