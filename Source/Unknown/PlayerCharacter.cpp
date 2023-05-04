@@ -2,13 +2,8 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
-
-// // Sets default values
-// APlayerCharacter::APlayerCharacter()
-// {
-//  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-// 	PrimaryActorTick.bCanEverTick = true;
-// }
+#include "DoorPlatform.h"
+#include "Core/Public/Misc/OutputDeviceNull.h"
 
 void APlayerCharacter::BeginPlay()
 {
@@ -64,8 +59,11 @@ void APlayerCharacter::Interact()
 
 	bool bSuccess = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel2, Params);
 	if (bSuccess) {
-    	UE_LOG(LogTemp, Warning, TEXT("Interacted!"));
-		DrawDebugPoint(GetWorld(), Hit.Location, 20, FColor::Red, true);
+		AActor *HitActor = Hit.GetActor();
+		if (HitActor->GetClass()->FindFunctionByName(TEXT("Interact"))) {
+			FOutputDeviceNull ar;
+			HitActor->CallFunctionByNameWithArguments(TEXT("Interact"), ar, nullptr, true);
+		}
 	}
 }
 
