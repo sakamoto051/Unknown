@@ -23,6 +23,8 @@ public:
 	bool CheckedLivingLamp = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool CheckedLockedDoorLamp = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool CheckedLockedSecondFloorDoor = false;
 
     UFUNCTION(BlueprintImplementableEvent, Category="GamePlayerState")
     void SetFlg(const FString& ObjectName);
