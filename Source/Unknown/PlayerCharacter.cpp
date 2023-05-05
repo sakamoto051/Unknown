@@ -6,6 +6,7 @@
 #include "Core/Public/Misc/OutputDeviceNull.h"
 #include "Sound/SoundCue.h"
 #include "Components/AudioComponent.h"
+#include "GamePlayerState.h"
 
 
 APlayerCharacter::APlayerCharacter()
@@ -79,6 +80,11 @@ void APlayerCharacter::Interact()
 			FOutputDeviceNull ar;
 			HitActor->CallFunctionByNameWithArguments(TEXT("Interact"), ar, nullptr, true);
 		}
+
+		AGamePlayerState* MyPlayerState = Cast<AGamePlayerState>(GetPlayerState());
+        if (MyPlayerState) {
+			MyPlayerState->SetFlg(HitActor->GetActorLabel());
+        }
 	}
 }
 
