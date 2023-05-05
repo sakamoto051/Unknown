@@ -23,15 +23,20 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool CanOpen;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsOpen;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsKnocking;
+
 	UFUNCTION()
 	void Interact();
+	UFUNCTION(BlueprintCallable)
+	void PlayKnockSound();
+	UFUNCTION(BlueprintCallable)
+	void StopKnockSound();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnInteract();
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool CanOpen;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool IsOpen;
 };

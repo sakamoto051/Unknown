@@ -2,6 +2,7 @@
 
 
 #include "DoorPlatform.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ADoorPlatform::ADoorPlatform()
@@ -30,3 +31,26 @@ void ADoorPlatform::Interact()
 	OnInteract();
 }
 
+void ADoorPlatform::PlayKnockSound()
+{
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("Door"), FoundActors);
+	for (AActor* Actor : FoundActors) {
+		FString ActorName = Actor->GetActorLabel();
+		if (ActorName == "LockedDoor") {
+			Cast<ADoorPlatform>(Actor)->IsKnocking = true;
+		}
+	}
+}
+
+void ADoorPlatform::StopKnockSound()
+{
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("Door"), FoundActors);
+	for (AActor* Actor : FoundActors) {
+		FString ActorName = Actor->GetActorLabel();
+		if (ActorName == "LockedDoor") {
+			Cast<ADoorPlatform>(Actor)->IsKnocking = false;
+		}
+	}
+}
