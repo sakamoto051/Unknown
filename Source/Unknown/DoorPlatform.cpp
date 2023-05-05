@@ -3,6 +3,7 @@
 
 #include "DoorPlatform.h"
 #include "Kismet/GameplayStatics.h"
+#include "CabinetPlatform.h"
 
 // Sets default values
 ADoorPlatform::ADoorPlatform()
@@ -51,6 +52,18 @@ void ADoorPlatform::StopKnockSound()
 		FString ActorName = Actor->GetActorLabel();
 		if (ActorName == "LockedDoor") {
 			Cast<ADoorPlatform>(Actor)->IsKnocking = false;
+		}
+	}
+}
+
+void ADoorPlatform::DestroyCabinet()
+{
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("Cabinet"), FoundActors);
+	for (AActor* Actor : FoundActors) {
+		FString ActorName = Actor->GetActorLabel();
+		if (ActorName == "LivingCabinet") {
+			Cast<ACabinetPlatform>(Actor)->DestroyOwn();
 		}
 	}
 }

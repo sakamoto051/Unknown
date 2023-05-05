@@ -25,11 +25,14 @@ public:
 	bool CheckedLockedDoorLamp = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool CheckedLockedSecondFloorDoor = false;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool Level2Flg = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool LivingPainting = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool Level3Flg = false;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool Level4Flg = false;
 

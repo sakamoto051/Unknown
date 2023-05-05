@@ -4,41 +4,37 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "DoorPlatform.generated.h"
+#include "PaintingPlatform.generated.h"
 
 UCLASS()
-class UNKNOWN_API ADoorPlatform : public AActor
+class UNKNOWN_API APaintingPlatform : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ADoorPlatform();
+	APaintingPlatform();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditAnywhere)
+	UMaterialInterface *ChangedMaterial;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool CanOpen;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool IsOpen;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool IsKnocking;
-
 	UFUNCTION()
 	void Interact();
-	UFUNCTION(BlueprintCallable)
-	void PlayKnockSound();
-	UFUNCTION(BlueprintCallable)
-	void StopKnockSound();
-	UFUNCTION(BlueprintCallable)
-	void DestroyCabinet();
-
+	UFUNCTION()
+	void DelayFunction(float DelayTime);
+	UFUNCTION()
+	void DelayedFunctionCall();
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnInteract();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsBlood;
 };
