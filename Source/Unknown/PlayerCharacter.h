@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "UnknownCharacter.h"
 #include "Sound/SoundCue.h"
+#include "Blueprint/UserWidget.h"
 #include "Components/AudioComponent.h"
 #include "PlayerCharacter.generated.h"
 
@@ -37,6 +38,11 @@ public:
 
 	void Interact();
 	void ToggleCrouched();
+	UFUNCTION(BlueprintCallable)
+	void ClearInputBind();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool CanMove = true;
 
 private:
 	void MoveForward(float AxisValue);
@@ -52,4 +58,13 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	bool IsCrouched;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UUserWidget> TitleWidget;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UUserWidget> ClearWidget;
+
+	UFUNCTION(BlueprintCallable)
+	void SetTitleWidget();
+	UFUNCTION(BlueprintCallable)
+	void SetClearWidget();
 };

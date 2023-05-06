@@ -6,7 +6,9 @@
 #include "Core/Public/Misc/OutputDeviceNull.h"
 #include "Sound/SoundCue.h"
 #include "Components/AudioComponent.h"
+#include "Blueprint/UserWidget.h"
 #include "GamePlayerState.h"
+#include "PaintingPlatform.h"
 
 
 APlayerCharacter::APlayerCharacter()
@@ -99,6 +101,19 @@ void APlayerCharacter::ToggleCrouched()
     }
 }
 
+void APlayerCharacter::ClearInputBind()
+{
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	PlayerController->bShowMouseCursor = true;
+
+	InputComponent = FindComponentByClass<UInputComponent>();
+    if (InputComponent)
+    {
+		InputComponent->ClearActionBindings();
+		InputComponent->ClearAxisBindings();
+    }
+}
+
 void APlayerCharacter::MoveForward(float AxisValue)
 {
 	AddMovementInput(GetActorForwardVector() * AxisValue * 100);
@@ -132,4 +147,20 @@ void APlayerCharacter::SoundFootStep()
 			FootstepAudioComponent->Stop();
 		}
 	}
+}
+
+void APlayerCharacter::SetTitleWidget()
+{
+    UUserWidget* TitleScreen = CreateWidget<UUserWidget>(GetWorld(), TitleWidget);
+    if (TitleScreen != nullptr) {
+        TitleScreen->AddToViewport();
+    }
+}
+
+void APlayerCharacter::SetClearWidget()
+{
+    UUserWidget* ClearScreen = CreateWidget<UUserWidget>(GetWorld(), ClearWidget);
+    if (ClearScreen != nullptr) {
+        ClearScreen->AddToViewport();
+    }
 }
