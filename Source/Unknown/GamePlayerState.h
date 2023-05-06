@@ -34,7 +34,11 @@ public:
 	bool Level3Flg = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool Level3NoisyFlg = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool Level4Flg = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool AllStopFlg = false;
 
     UFUNCTION(BlueprintImplementableEvent, Category="GamePlayerState")
     void SetFlg(const FString& ObjectName);

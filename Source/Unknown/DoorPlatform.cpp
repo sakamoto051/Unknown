@@ -67,3 +67,8 @@ void ADoorPlatform::DestroyCabinet()
 		}
 	}
 }
+
+void ADoorPlatform::StopAll()
+{
+	UE_LOG(LogTemp, Display, TEXT("Stop All!!!!!"));
+}

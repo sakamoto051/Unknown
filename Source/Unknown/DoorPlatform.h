@@ -38,6 +38,8 @@ public:
 	void StopKnockSound();
 	UFUNCTION(BlueprintCallable)
 	void DestroyCabinet();
+	UFUNCTION(BlueprintCallable)
+	void StopAll();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnInteract();
